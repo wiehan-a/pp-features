@@ -468,6 +468,16 @@ class Server(object):
         self.__scheduler()
         return task
 
+    def restart_local_workers(self):
+        """
+            Restart local worker processes as soon as all jobs are finished.
+        """
+        self.wait()
+
+        for worker in self.__workers:
+            if not worker.restart_on_free:
+                worker.restart()
+
     def wait(self, group=None):
         """Waits for all jobs in a given group to finish.
            If group is omitted waits for all jobs to finish
